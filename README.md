@@ -13,8 +13,6 @@ A pytorch implementation of the "TFDL" and "DFTL" models in the "Joint Multi-Sca
 9. kornia 0.2.2
 
 ### Folder structure
-Download the Zero-DCE++ first.
-The following shows the basic folder structure.
 ```
 
 ├── examples # Contains input examples to test the model
