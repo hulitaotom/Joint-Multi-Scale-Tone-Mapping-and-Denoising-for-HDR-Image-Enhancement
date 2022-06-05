@@ -82,8 +82,10 @@ def process(config):
 
 	paths = glob.glob(os.path.join(config.input_folder, '*'))
 	for inp_path in paths:
-		inp_img = read_raw(inp_path)
-		inp_img = cv2.resize(inp_img, (0,0), fx=0.5, fy=0.5)
+		if inp_path.split('.')[-1] == 'dng':
+			inp_img = read_raw(inp_path)
+		else:
+			inp_img = cv2.imread(inp_path).astype(float)/255.0
 		inp_name = os.path.basename(inp_path).split('.')[0]
 		out_path = os.path.join(output_folder, inp_name+'.png')
 		time = enhance(model, inp_img, out_path)
