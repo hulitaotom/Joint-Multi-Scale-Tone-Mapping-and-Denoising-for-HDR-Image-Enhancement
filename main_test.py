@@ -23,8 +23,9 @@ def enhance(model, inp, out_path):
 		height, width, _ = inp.shape
 		inp = np.pad(inp, ((PATCH_SIZE,PATCH_SIZE), (PATCH_SIZE,PATCH_SIZE), (0,0)), 'edge')
 		inp = torch.from_numpy(inp).float()
-		inp = inp.permute(2,0,1)
-		inp = inp.cuda().unsqueeze(0)
+		inp = inp.permute(2,0,1).unsqueeze(0)
+		if torch.cuda.is_available():
+			inp = inp.cuda()
 		output = np.zeros((inp.shape[2], inp.shape[3], 3))
 
 		lineWeights = centeredCosineWindow(np.arange(PATCH_SIZE), PATCH_SIZE).reshape(-1, 1).repeat(PATCH_SIZE, 1)
@@ -47,16 +48,18 @@ def enhance(model, inp, out_path):
 
 def process(config):
 	if config.model_type == 'TFDL':
-		model = TFDL().cuda()
+		model = TFDL()
 		model_path = "./snapshots/TFDL.pth"
 	elif config.model_type == 'DFTL':
 		print("This model type is not yet ready.")
 		return
-		model = DFTL().cuda()
+		model = DFTL()
 		model_path = "./snapshots/DFTL.pth"
 	else:
 		print("Incorrect model type, please double check input arguments.")
 		return 
+	if torch.cuda.is_available():
+		model = model.cuda()
 	model.load_state_dict(torch.load(model_path))
 	model.eval()
 

@@ -43,7 +43,10 @@ class denoiseNet_adaptive_thre6(nn.Module):
 	
 	def forward(self, x):
 		b,ch,h,w = x.shape
-		scale = self.fold(self.unfold(torch.ones(x.shape, requires_grad=False))).cuda()
+		scale = self.fold(self.unfold(torch.ones(x.shape, requires_grad=False)))
+		if torch.cuda.is_available():
+			scale = scale.cuda()
+
 		tiles = self.unfold(x).permute(0,2,1).reshape(b,-1,self.tsize,self.tsize)
 		dct_tiles = dct.dct_2d(tiles)
 		masks = self.sigmoid(self.cnn(dct_tiles/(self.tsize*self.tsize)))
