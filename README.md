@@ -25,6 +25,8 @@ A pytorch implementation of the "TFDL" and "DFTL" models in the "Joint Multi-Sca
 ├── main_test.py # testing code
 ├── models.py # Our models are defined here
 ```
+Note that snapshots/TFDL.pth is uploaded using git lfs, so please do git lfs fetch in order to download this file.
+
 ### Test: 
 
 cd Joint-Multi-Scale-Tone-Mapping-and-Denoising-for-HDR-Image-Enhancement
