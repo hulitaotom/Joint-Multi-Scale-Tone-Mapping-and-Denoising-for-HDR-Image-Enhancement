@@ -11,11 +11,12 @@ A pytorch implementation of the "TFDL" and "DFTL" models in the "Joint Multi-Sca
 7. matplotlib
 8. torch_dct
 9. kornia
+10. rawpy
 
 ### Folder structure
 ```
 
-├── examples # Contains input examples to test the model
+├── examples # Contains raw image examples from HDR+ dataset to test the model
 ├── results
 │   └── TFDL # Test results will be saved here by default
 ├── snapshots # Pre-trained snapshots

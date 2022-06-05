@@ -9,7 +9,15 @@ import time
 import torch_dct as dct
 from models import *
 import sys
+import rawpy
 
+
+def read_raw(path, ratio=1):
+	raw = rawpy.imread(path)
+	im = raw.postprocess(use_camera_wb=True, half_size=False, no_auto_bright=True, output_bps=16)*ratio
+	im = cv2.cvtColor(np.float32(im / 65535.0), cv2.COLOR_RGB2BGR) # convert from RGB to BGR
+	# returning an BGR image!
+	return im
 
 def centeredCosineWindow(x, windowSize=16):
 	'''1D version of the modified raised cosine window (Section 4.4 of the IPOL article).
@@ -60,7 +68,9 @@ def process(config):
 		return 
 	if torch.cuda.is_available():
 		model = model.cuda()
-	model.load_state_dict(torch.load(model_path))
+		model.load_state_dict(torch.load(model_path))
+	else:
+		model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
 	model.eval()
 
 	if not os.path.exists(config.output_folder):
@@ -72,7 +82,7 @@ def process(config):
 
 	paths = glob.glob(os.path.join(config.input_folder, '*'))
 	for inp_path in paths:
-		inp_img = np.load(inp_path)
+		inp_img = read_raw(inp_path)
 		inp_name = inp_path.split('/')[-1].split('.')[0]
 		out_path = os.path.join(output_folder, inp_name+'.png')
 		time = enhance(model, inp_img, out_path)
