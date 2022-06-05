@@ -9,9 +9,8 @@ A pytorch implementation of the "TFDL" and "DFTL" models in the "Joint Multi-Sca
 5. cuda 10.2
 6. numpy
 7. matplotlib
-8. torch_dct
-9. kornia
-10. rawpy
+8. kornia
+9. rawpy
 
 ### Folder structure
 ```
